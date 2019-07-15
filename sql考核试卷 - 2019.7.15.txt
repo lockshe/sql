@@ -1,0 +1,247 @@
+sql考核：
+	考试时长 2小时30分钟 （9：10 - 11：40）
+	考试期间可以查阅个人的学习资料，不可上网查询、相互讨论、相互借阅资料
+一、要求： 
+	1. 阅读 - sql考核建表语句
+	2. 根据建表语句的结果，完成 - sql考核题目，写出对应的sql语句
+	
+	
+二、sql考核建表语句：
+
+Create Table  HAND_STUDENT
+(
+ STUDENT_NO Varchar(10) Not Null,
+ STUDENT_NAME Varchar(20),
+ STUDENT_AGE BigInt,
+ STUDENT_GENDER Varchar(5),
+ OBJECT_VERSION_NUMBER BigInt Not Null Default 1,
+ CREATION_DATE  datetime Not Null Default CURRENT_TIMESTAMP,
+ CREATED_BY BigInt Not Null Default -1,
+ LAST_UPDATED_BY BigInt Not Null Default -1,
+ LAST_UPDATE_DATE datetime Not Null Default CURRENT_TIMESTAMP,
+ LAST_UPDATE_LOGIN BigInt Default -1
+);
+ALTER TABLE  HAND_STUDENT COMMENT '学生信息表';
+ALTER TABLE  HAND_STUDENT MODIFY `STUDENT_NO` Varchar(10) Not Null Comment '学号';
+ALTER TABLE  HAND_STUDENT MODIFY `STUDENT_NAME` Varchar(20) Comment '姓名';
+ALTER TABLE  HAND_STUDENT MODIFY `STUDENT_AGE` BigInt Comment '年龄';
+ALTER TABLE  HAND_STUDENT MODIFY `STUDENT_GENDER` Varchar(5) Comment '性别';
+ALTER TABLE  HAND_STUDENT MODIFY `OBJECT_VERSION_NUMBER` BigInt Not Null Default 1 Comment '行版本号，用来处理锁';
+
+ALTER TABLE `HAND_STUDENT` ADD UNIQUE (`STUDENT_NO`);
+
+Create Table  HAND_TEACHER
+(
+ TEACHER_NO Varchar(10) Not Null,
+ TEACHER_NAME Varchar(20),
+ MANAGER_NO Varchar(10),
+ OBJECT_VERSION_NUMBER BigInt Not Null Default 1,
+ CREATION_DATE  datetime Not Null Default CURRENT_TIMESTAMP,
+ CREATED_BY BigInt Not Null Default -1,
+ LAST_UPDATED_BY BigInt Not Null Default -1,
+ LAST_UPDATE_DATE datetime Not Null Default CURRENT_TIMESTAMP,
+ LAST_UPDATE_LOGIN BigInt Default -1
+);
+ALTER TABLE  HAND_TEACHER COMMENT '教师信息表';
+ALTER TABLE  HAND_TEACHER MODIFY `TEACHER_NO` Varchar(10) Not Null Comment '教师编号';
+ALTER TABLE  HAND_TEACHER MODIFY `TEACHER_NAME` Varchar(20) Comment '教师名称';
+ALTER TABLE  HAND_TEACHER MODIFY `MANAGER_NO` Varchar(10) Comment '上级编号';
+ALTER TABLE  HAND_TEACHER MODIFY `OBJECT_VERSION_NUMBER` BigInt Not Null Default 1 Comment '行版本号，用来处理锁';
+
+ALTER TABLE `HAND_TEACHER` ADD UNIQUE (`TEACHER_NO`);
+
+
+Create Table  HAND_COURSE
+(
+ COURSE_NO Varchar(10) Not Null,
+ COURSE_NAME Varchar(20),
+ TEACHER_NO Varchar(10) Not Null,
+ OBJECT_VERSION_NUMBER BigInt Not Null Default 1,
+ CREATION_DATE  datetime Not Null Default CURRENT_TIMESTAMP,
+ CREATED_BY BigInt Not Null Default -1,
+ LAST_UPDATED_BY BigInt Not Null Default -1,
+ LAST_UPDATE_DATE datetime Not Null Default CURRENT_TIMESTAMP,
+ LAST_UPDATE_LOGIN BigInt Default -1
+);
+ALTER TABLE  HAND_COURSE COMMENT '课程信息表';
+ALTER TABLE  HAND_COURSE MODIFY `COURSE_NO` Varchar(10) Not Null Comment '课程号';
+ALTER TABLE  HAND_COURSE MODIFY `COURSE_NAME` Varchar(20) Comment '课程名称';
+ALTER TABLE  HAND_COURSE MODIFY `TEACHER_NO` Varchar(10) Not Null Comment '教师编号';
+ALTER TABLE  HAND_COURSE MODIFY `OBJECT_VERSION_NUMBER` BigInt Not Null Default 1 Comment '行版本号，用来处理锁';
+
+ALTER TABLE `HAND_COURSE` ADD UNIQUE (`COURSE_NO`);
+
+Create Table  HAND_STUDENT_CORE
+(
+ STUDENT_NO Varchar(10) Not Null,
+ COURSE_NO Varchar(10) Not Null,
+ CORE Decimal(4,2),
+ OBJECT_VERSION_NUMBER BigInt Not Null Default 1,
+ CREATION_DATE  datetime Not Null Default CURRENT_TIMESTAMP,
+ CREATED_BY BigInt Not Null Default -1,
+ LAST_UPDATED_BY BigInt Not Null Default -1,
+ LAST_UPDATE_DATE datetime Not Null Default CURRENT_TIMESTAMP,
+ LAST_UPDATE_LOGIN BigInt Default -1
+);
+ALTER TABLE  HAND_STUDENT_CORE COMMENT '学生成绩表';
+ALTER TABLE  HAND_STUDENT_CORE MODIFY `STUDENT_NO` Varchar(10) Not Null Comment '学号';
+ALTER TABLE  HAND_STUDENT_CORE MODIFY `COURSE_NO` Varchar(10) Not Null Comment '课程号';
+ALTER TABLE  HAND_STUDENT_CORE MODIFY `CORE` Decimal(4,2) Comment '分数';
+ALTER TABLE  HAND_STUDENT_CORE MODIFY `OBJECT_VERSION_NUMBER` BigInt Not Null Default 1 Comment '行版本号，用来处理锁';
+
+ALTER TABLE `HAND_STUDENT_CORE` ADD UNIQUE (`STUDENT_NO`,`COURSE_NO`);
+
+
+
+/*******初始化学生表的数据******/
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s001','张三',23,'男');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s002','李四',23,'男');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s003','吴鹏',25,'男');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s004','琴沁',20,'女');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s005','王丽',20,'女');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s006','李波',21,'男');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s007','刘玉',21,'男');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s008','萧蓉',21,'女');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s009','陈萧晓',23,'女');
+insert into HAND_STUDENT(STUDENT_NO,STUDENT_NAME,STUDENT_AGE,STUDENT_GENDER) values ('s010','陈美',22,'女');
+commit;
+/******************初始化教师表***********************/
+insert into HAND_TEACHER(TEACHER_NO,TEACHER_NAME,MANAGER_NO) values ('t001', '刘阳','');
+insert into HAND_TEACHER(TEACHER_NO,TEACHER_NAME,MANAGER_NO)  values ('t002', '谌燕','t001');
+insert into HAND_TEACHER(TEACHER_NO,TEACHER_NAME,MANAGER_NO)  values ('t003', '胡明星','t002');
+commit;
+/***************初始化课程表****************************/
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c001','J2SE','t002');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c002','Java Web','t002');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c003','SSH','t001');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c004','Oracle','t001');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c005','SQL SERVER 2005','t003');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c006','C#','t003');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c007','JavaScript','t002');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c008','DIV+CSS','t001');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c009','PHP','t003');
+insert into HAND_COURSE(COURSE_NO,COURSE_NAME,TEACHER_NO) values ('c010','EJB3.0','t002');
+commit;
+/***************初始化成绩表***********************/
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s001','c001',58.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s002','c001',80.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s003','c001',81.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s004','c001',60.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s001','c002',82.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s002','c002',72.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s003','c002',81.9);
+insert into HAND_STUDENT_CORE(STUDENT_NO,COURSE_NO,CORE) values ('s001','c003','59');
+commit;
+	
+	
+
+三、sql考核题目：
+
+1、查询没学过“谌燕”老师课的同学，显示（学号、姓名）
+
+select STUDENT_NO,STUDENT_NAME from HAND_STUDENT 
+WHERE NOT EXISTS (SELECT *
+                  FROM HAND_COURSE, HAND_TEACHER, HAND_STUDENT_CORE
+                  WHERE HAND_COURSE.TEACHER_NO = HAND_TEACHER.TEACHER_NO
+                      AND HAND_COURSE.COURSE_NO = HAND_STUDENT_CORE.COURSE_NO
+                      AND HAND_STUDENT.STUDENT_NO = HAND_STUDENT_CORE.STUDENT_NO
+                      AND TEACHER_NAME = '谌燕');
+
+2、查询没有学全所有课的同学，显示（学号、姓名）
+
+学生表和成绩表左外连接然后分组查询
+SELECT HAND_STUDENT.STUDENT_NO,HAND_STUDENT.STUDENT_NAME
+FROM HAND_STUDENT LEFT JOIN HAND_STUDENT_CORE ON HAND_STUDENT.STUDENT_NO = HAND_STUDENT_CORE.STUDENT_NO
+GROUP BY STUDENT_NO, STUDENT_NAME
+HAVING count( HAND_STUDENT_CORE.COURSE_NO ) < (SELECT count(HAND_COURSE.COURSE_NO) FROM HAND_COURSE)
+                  
+3、查询“c001”课程比“c002”课程成绩高的所有学生，显示（学号、姓名）
+自查询
+select HAND_STUDENT.STUDENT_NO ,HAND_STUDENT.STUDENT_NAME from HAND_STUDENT
+,(select * from HAND_STUDENT_CORE hc1 where hc1.COURSE_NO='c001') as table1
+,(select * from HAND_STUDENT_CORE hc2 where hc2.COURSE_NO='c002') as table2
+where table1.STUDENT_NO = table2.STUDENT_NO and table1.STUDENT_NO=HAND_STUDENT.STUDENT_NO and table1.CORE > table2.CORE
+                  
+4、按各科平均成绩和及格率的百分数，按及格率高到低顺序，显示（课程号、平均分、及格率）
+
+select HAND_COURSE.COURSE_NO,AVG(CORE),count(*)
+from HAND_STUDENT_CORE , HAND_COURSE
+where HAND_COURSE.COURSE_NO = HAND_STUDENT_CORE.COURSE_NO  group by HAND_COURSE.COURSE_NO
+desc 
+
+5、1992年之后出生的学生名单找出年龄最大和最小的同学，显示（学号、姓名、年龄）
+
+select STUDENT_NO,STUDENT_AGE,STUDENT_NAME from HAND_STUDENT where STUDENT_AGE>=All (select STUDENT_AGE from HAND_STUDENT) or STUDENT_AGE <= ANY (select STUDENT_AGE from HAND_STUDENT) and  STUDENT_AGE>27
+
+6、统计列出矩阵类型各分数段人数，横轴为分数段[100-85]、[85-70]、[70-60]、[<60]，纵轴为课程号、课程名称
+
+ 
+7、查询各科成绩前三名的记录:(不考虑成绩并列情况)，显示（学号、课程号、分数）
+select STUDENT_NO,COURSE_NO,CORE from HAND_STUDENT_CORE,HAND_STUDENT
+where HAND_STUDENT.STUDENT_NO =HAND_STUDENT_CORE.STUDENT_NO
+group by COURSE_NO desc
+limit 0,3 
+8、查询选修“谌燕”老师所授课程的学生中每科成绩最高的学生，显示（学号、姓名、课程名称、成绩）
+
+select HAND_STUDENT.STUDENT_NO ,STUDENT_NAME ,COURSE_NAME,CORE from HAND_STUDENT,HAND_TEACHER,HAND_COURSE,HAND_STUDENT_CORE
+
+where HAND_COURSE.TEACHER_NO = HAND_TEACHER.TEACHER_NO and HAND_COURSE.COURSE_NO = HAND_STUDENT_CORE.COURSE_NO and TEACHER_NAME='湛燕'
+      and CORE>ALL (select CORE from HAND_COURSE where HAND_COURSE.COURSE_NO = HAND_STUDENT_CORE.COURSE_NO)
+group by HAND_COURSE.COURSE_NO
+
+9、查询两门及以上不及格课程的同学及平均成绩，显示（学号、姓名、平均成绩（保留两位小数））
+select STUDENT_NO,STUDENT_NAME,avg(CORE)from HAND_STUDENT,HAND_STUDENT_CORE
+where (select count(*) from HAND_STUDENT_CORE where  HAND_STUDENT.STUDENT_NO = HAND_STUDENT_CORE.STUDENT_NO and CORE<60)>=2
+group by STUDENT_NO, STUDENT_NAME
+
+10、查询姓氏数量最多的学生名单，显示（学号、姓名、人数）
+   
+11、查询课程名称为“J2SE”的学生成绩信息，90以上为“优秀”、80-90为“良好”、60-80为“及格”、60分以下为“不及格”，显示（学号、姓名、课程名称、成绩、等级）
+select STUDENT_NO,STUDENT_NAME , COURSE_NAME,CORE,
+when core >= 90 then '优秀' 
+when core < 90 and core >= 80 then 
+'良好' 
+when core < 80 and core >= 60 then 
+'及格'
+when core < 60 then 
+'不及格'
+end class
+from HAND_STUDENT_CORE,HAND_COURSE,HAND_STUDENT
+where HAND_STUDENT_CORE.COURSE_NO=HAND_COURSE.COURSE_NO
+ and  HAND_STUDENT_CORE.STUDENT_NO =HAND_STUDENT.STUDENT_NO
+ and COURSE_NAME= 'J2SE'
+   
+12、查询教师“胡明星”的所有主管及姓名:（无主管的教师也需要显示），显示（教师编号、教师名称、主管编号、主管名称）
+select TEACHER_NO,TEACHER_NAME,MANAGER_NO from HAND_TEACHER
+where TEACHER_NAME = '胡明星'
+;
+表里面没有关于主管的表啊。。。。
+假设有一个主管的表叫做HAND_MANAGER，有字段ID，NAME，那么sql语句为
+select TEACHER_NO,TEACHER_NAME,MANAGER_NO from HAND_TEACHER left outer join HAND_MANAGER on HAND_TEACHER.MANAGER_NO = HAND_MANAGER.MANAGER_NO
+where TEACHER_NAME='胡明星'
+
+13、查询分数高于课程“J2SE”的所有学生课程信息，显示（学号，姓名，课程名称、分数）
+select HAND_STUDENT.STUDENT_NO,STUDENT_NAME,COURSE_NAME,CORE from HAND_STUDENT_CORE,HAND_STUDENT,HAND_COURSE
+where HAND_COURSE.COURSE_NO=HAND_STUDENT_CORE.COURSE_NO and HAND_STUDENT.STUDENT_NO = HAND_STUDENT_CORE.STUDENT_NO
+and HAND_STUDENT_CORE.CORE > ALL(
+    
+    select HAND_STUDENT_CORE.core
+    from HAND_STUDENT_CORE,HAND_COURSE
+    where HAND_STUDENT_CORE.COURSE_NO=HAND_COURSE.COURSE_NO
+    and HAND_COURSE.COURSE_NAME='J2SE'
+)
+   
+14、分别根据教师、课程、教师和课程三个条件统计选课的学生数量：(使用rollup),显示（教师名称、课程名称、选课数量）
+
+select TEACHER_NAME,COURSE_NAME,count(*)
+from HAND_STUDENT_CORE,HAND_TEACHER,HAND_COURSE
+where HAND_COURSE.COURSE_NO=HAND_STUDENT_CORE.COURSE_NO
+and   HAND_COURSE.TEACHER_NO=HAND_TEACHER.TEACHER_NO
+group by TEACHER_NAME, COURSE_NAME with rollup
+ 
+15、查询所有课程成绩前三名的按照升序排在最开头，其余数据排序保持默认（7分）,显示（学号、成绩）
+
+select HAND_STUDENT.STUDENT_NO,CORE from HAND_STUDENT,HAND_STUDENT_CORE
+where HAND_STUDENT.STUDENT_NO=HAND_STUDENT_CORE.STUDENT_NO
+order by CORE desc
+	
